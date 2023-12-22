@@ -13,6 +13,8 @@ class FibonacciWithIsolatesWidget extends StatefulWidget {
 
 class _FibonacciWithIsolatesWidgetState
     extends State<FibonacciWithIsolatesWidget> {
+  bool showWidget = false;
+
   int number = 25;
   int result = 0;
 
@@ -47,56 +49,74 @@ class _FibonacciWithIsolatesWidgetState
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Flexible(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text(
-                'fibonacci(${number - 1})',
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              if (isCalculating)
-                const Center(child: LinearProgressIndicator())
-              else
-                const SizedBox(height: 4),
-              AnimatedSlideOdometerNumber(
-                odometerNumber: OdometerNumber(result),
-                duration: const Duration(seconds: 1),
-                numberTextStyle: GoogleFonts.pressStart2p(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                ),
-                letterWidth: 32,
-              ),
-            ],
-          ),
+        SwitchListTile(
+          title:
+              showWidget ? const Text('With Isolates') : const Text('#######'),
+          value: showWidget,
+          onChanged: (value) {
+            setState(() {
+              showWidget = value;
+            });
+          },
         ),
-        Padding(
-          padding: const EdgeInsets.all(56.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              FloatingActionButton(
-                onPressed: nextFibonacci,
-                child: const Icon(Icons.add),
-              ),
-              const SizedBox(width: 16),
-              FloatingActionButton(
-                onPressed: () {
-                  setState(() {
-                    number = 42;
-                    nextFibonacci();
-                  });
-                },
-                child: const Icon(Icons.refresh),
-              ),
-            ],
-          ),
-        )
+        Flexible(
+          child: showWidget
+              ? Column(
+                  children: [
+                    Flexible(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            'fibonacci(${number - 1})',
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          if (isCalculating)
+                            const Center(child: LinearProgressIndicator())
+                          else
+                            const SizedBox(height: 4),
+                          AnimatedSlideOdometerNumber(
+                            odometerNumber: OdometerNumber(result),
+                            duration: const Duration(seconds: 1),
+                            numberTextStyle: GoogleFonts.pressStart2p(
+                              fontSize: 32,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            letterWidth: 32,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(56.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          FloatingActionButton(
+                            onPressed: nextFibonacci,
+                            child: const Icon(Icons.add),
+                          ),
+                          const SizedBox(width: 16),
+                          FloatingActionButton(
+                            onPressed: () {
+                              setState(() {
+                                number = 42;
+                                nextFibonacci();
+                              });
+                            },
+                            child: const Icon(Icons.refresh),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                )
+              : Container(),
+        ),
       ],
     );
   }

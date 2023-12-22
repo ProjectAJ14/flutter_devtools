@@ -14,6 +14,7 @@ class CpuProfileScreen extends StatelessWidget {
       body: Column(
         children: [
           Flexible(child: FibonacciWidget()),
+          Divider(),
           Flexible(child: FibonacciWithIsolatesWidget()),
         ],
       ),
